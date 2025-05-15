@@ -5,7 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const { createServer } = require("http");
-const { server } = require("socket.io");
+const { Server } = require("socket.io");
 
 const app = express();
 const httpServer = createServer(app);
@@ -13,14 +13,14 @@ const httpServer = createServer(app);
 //Middleware
 app.use(cors());
 app.use(helmet());
-app.use(morgan());
+app.use(morgan("dev"));
 app.use(express.json());
 
 //socket.io set up
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENTURL || "http://localhost:3000",
-    method: ["GET", "POST"],
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    methods: ["GET", "POST"],
   },
 });
 
