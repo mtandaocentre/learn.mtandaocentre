@@ -6,6 +6,8 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const { Socket } = require("dgram");
+const { timeStamp } = require("console");
 
 const app = express();
 const httpServer = createServer(app);
@@ -31,6 +33,33 @@ mongoose
   .catch((err) => console.error("MongoBD connection error:", err));
 
 //Routes will be added here
+
+// Socket.io connection
+io.on("connection", (socket) => {
+  console.log("New client connected!");
+
+  socket.on("JoinRoom", (room) => {
+    socket.join(room);
+    console.log(`User joined room: ${room}`);
+  });
+
+  socket.on("leaveRoom", (room) => {
+    socket.leave(room);
+    console.log(`User left room: ${room}`);
+  });
+
+  socket.on("chatMessage", ({ room, message, user }) => {
+    io.to(room).emit("message", {
+      user,
+      text: message,
+      timestamp: new Data(),
+    });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Client is disconnectec");
+  });
+});
 
 //Error handling middleware
 app.use((err, req, res, next) => {
