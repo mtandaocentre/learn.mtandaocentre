@@ -6,8 +6,9 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const { Socket } = require("dgram");
-const { timeStamp } = require("console");
+const authRoutes = require("./routes/authRoutes");
+const articleRoutes = require("./routes/articleRoutes");
+const trackAnalytics = require("./middlewares/analytics.js");
 
 const app = express();
 const httpServer = createServer(app);
@@ -16,6 +17,7 @@ const httpServer = createServer(app);
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
+app.use(trackAnalytics);
 app.use(express.json());
 
 //socket.io set up
@@ -33,6 +35,8 @@ mongoose
   .catch((err) => console.error("MongoBD connection error:", err));
 
 //Routes will be added here
+app.use("api/auth", authRoutes);
+app.use("api/articles", articleRoutes);
 
 // Socket.io connection
 io.on("connection", (socket) => {
