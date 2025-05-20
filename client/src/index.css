@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind component;
+@tailwind utilities;
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,6 +15,50 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tailwind-powered styles */
+body {
+  @apply bg-primary-dark text-text-light min-h-screen;
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+}
+
+/* Dark mode transitions */
+body,
+.transition-bg {
+  transition: background-color 0.3s ease;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 640px) {
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet-only {
+    display: block;
+  }
+  .mobile-only {
+    display: none;
+  }
+}
+
+@media (min-width: 1025px) {
+  .desktop-only {
+    display: block;
+  }
+  .mobile-only,
+  .tablet-only {
+    display: none;
+  }
 }
 
 a {
