@@ -1,18 +1,17 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { vitePWA } from "vite-plugin-pwa";
+import { VitePWA } from "vite-plugin-pwa";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    vitePWA({
+    VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {
-        name: "learn.mtandaocentre",
-        short_name: "learn.mtandao",
-        description: "Mtandao Centre E-Learning App",
+        name: "Learning Blog",
+        short_name: "LearnBlog",
+        description: "MERN Stack Learning Blog",
         theme_color: "#1a1a2e",
         icons: [
           {
@@ -36,7 +35,7 @@ export default defineConfig({
               cacheName: "api-cache",
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+                maxAgeSeconds: 24 * 60 * 60, // 1 day
               },
             },
           },
