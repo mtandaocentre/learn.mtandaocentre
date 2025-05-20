@@ -1,24 +1,27 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const {
+import {
   getArticles,
   getArticleById,
-  creatArticle,
+  createArticle, // Fixed typo from creatArticle
   updateArticle,
   deleteArticle,
   addComment,
   likeArticle,
-} = require("../controllers/articleController");
-const { protect, admin } = require("../middlewares/auth");
+} from "../controllers/articleController.js";
+import { protect, admin } from "../middlewares/auth.js";
 
+// Public routes
 router.get("/", getArticles);
 router.get("/:id", getArticleById);
-router.post("/", protect, admin, creatArticle);
+
+// Admin protected routes
+router.post("/", protect, admin, createArticle); // Fixed typo here
 router.put("/:id", protect, admin, updateArticle);
 router.delete("/:id", protect, admin, deleteArticle);
 
-// Stdent only routes
+// Student protected routes
 router.post("/:id/comments", protect, addComment);
 router.post("/:id/like", protect, likeArticle);
 
-module.exports = router;
+export default router;

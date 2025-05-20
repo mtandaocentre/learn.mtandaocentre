@@ -1,41 +1,41 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-const protect = async (req, resizeBy, next) => {
+const protect = async (req, res, next) => {
   let token;
+
+  // Fixed typo: startWith -> startsWith
   if (
     req.headers.authorization &&
-    req.headers.authorization.startWith("Bearer")
+    req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
 
   if (!token) {
-    res
-      .status(401)
-      .json({ msaage: "Sorry you do not have an authorization token!" });
+    return res.status(401).json({ message: "Authorization token required!" });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_Secret);
-    req.user = await User.findById(decoded.id).select("password");
+    // Fixed typo: JWT_Secret -> JWT_SECRET (standard naming convention)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Fixed: select("-password") instead of select("password")
+    req.user = await User.findById(decoded.id).select("-password");
     next();
   } catch (err) {
     console.error(err);
-    res
-      .status(401)
-      .json({ massage: "Sorry your authentication token did not pass!" });
+    res.status(401).json({ message: "Invalid authentication token!" });
   }
 };
 
 const admin = (req, res, next) => {
-  if (req.user && req.user.role == "admin") {
+  // Use strict equality check
+  if (req.user && req.user.role === "admin") {
     next();
   } else {
-    res
-      .status(403)
-      .json({ message: " Sorry you are not recognized as admin!" });
+    res.status(403).json({ message: "Admin privileges required!" });
   }
 };
 
-module.exports = { protect, admin };
+export { protect, admin };

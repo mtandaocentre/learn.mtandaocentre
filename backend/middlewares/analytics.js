@@ -1,27 +1,33 @@
-const Analytics = require("../models/Analytics");
+import Analytics from "../models/Analytics.js";
 
 const trackAnalytics = async (req, res, next) => {
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    //find or create todays analytic record
+    // Find or create today's analytics record
     let analytics = await Analytics.findOne({ date: today });
 
     if (!analytics) {
-      analytics = new Analytics.findOne({ date: today });
+      analytics = new Analytics({
+        date: today,
+        visitors: 0,
+        signedInUsers: 0,
+        articleViews: 0,
+        shares: 0,
+      });
     }
 
-    // Increament visitor count
+    // Increment visitor count
     analytics.visitors += 1;
 
-    // if user is authenticated, increament signedInUsers
+    // If user is authenticated, increment signedInUsers
     if (req.user) {
       analytics.signedInUsers += 1;
     }
 
-    // if this is an article view increament article view
-    if (req.originalUrl.includes("api/articles") && req.method === "GET") {
+    // If this is an article view, increment articleViews
+    if (req.originalUrl.includes("/api/articles/") && req.method === "GET") {
       analytics.articleViews += 1;
     }
 
@@ -33,4 +39,4 @@ const trackAnalytics = async (req, res, next) => {
   }
 };
 
-modules.exports = trackAnalytics;
+export default trackAnalytics;

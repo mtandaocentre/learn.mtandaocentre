@@ -1,8 +1,8 @@
-const Article = require("../models/Article");
+import Article from "../models/Article.js";
 
-exports.getArticles = async (req, res) => {
+export const getArticles = async (req, res) => {
   try {
-    const Articles = await Article.find()
+    const articles = await Article.find()
       .populate("author", "username")
       .sort({ createdAt: -1 });
     res.json(articles);
@@ -12,14 +12,15 @@ exports.getArticles = async (req, res) => {
   }
 };
 
-exports.getArticleById = async (req, res) => {
+export const getArticleById = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id)
       .populate("author", "username")
-      .populate("comment.user", "username")
+      .populate("comments.user", "username") // Fixed from comment.user to comments.user
       .populate("likes", "username");
 
-    if (!Article) {
+    if (!article) {
+      // Fixed variable name from Article to article
       return res.status(404).json({ message: "Article not found!" });
     }
 
@@ -30,7 +31,8 @@ exports.getArticleById = async (req, res) => {
   }
 };
 
-exports.creatArticle = async (req, res) => {
+export const createArticle = async (req, res) => {
+  // Fixed typo in method name
   try {
     const { title, content, tags } = req.body;
     const article = new Article({
@@ -48,16 +50,16 @@ exports.creatArticle = async (req, res) => {
   }
 };
 
-exports.updateArticle = async (req, res) => {
+export const updateArticle = async (req, res) => {
   try {
-    const { title, content, tag } = req.body;
+    const { title, content, tags } = req.body; // Fixed variable name from tag to tags
     const article = await Article.findById(req.params.id);
 
     if (!article) {
       return res.status(404).json({ message: "Article Not Found!" });
     }
 
-    if (article.author.toString() != req.user._id.toString()) {
+    if (article.author.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: "Not Authorized!" });
     }
 
@@ -73,7 +75,7 @@ exports.updateArticle = async (req, res) => {
   }
 };
 
-exports.deleteArticle = async (req, res) => {
+export const deleteArticle = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
 
@@ -81,11 +83,11 @@ exports.deleteArticle = async (req, res) => {
       return res.status(404).json({ message: "Article Not Found!" });
     }
 
-    if (article.author.toString() != req.user._id.toString()) {
-      return res.status(401).json({ meassage: "Not Authorised!" });
+    if (article.author.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "Not Authorized!" }); // Fixed typo
     }
 
-    await article.remove();
+    await article.deleteOne(); // Changed from remove() to deleteOne()
     res.json({ message: "Article Deleted!" });
   } catch (err) {
     console.error(err);
@@ -93,7 +95,7 @@ exports.deleteArticle = async (req, res) => {
   }
 };
 
-exports.addComment = async (req, res) => {
+export const addComment = async (req, res) => {
   try {
     const { text } = req.body;
     const article = await Article.findById(req.params.id);
@@ -112,21 +114,21 @@ exports.addComment = async (req, res) => {
 
     // Populate user field in the newly added comment
     await Article.populate(article, {
-      path: "comment.user",
+      path: "comments.user", // Fixed path from comment.user to comments.user
       select: "username",
     });
 
     // Get the newly added comment (last one in the array)
     const newComment = article.comments[article.comments.length - 1];
 
-    res.status(500).json(newComment);
+    res.status(201).json(newComment); // Fixed status code from 500 to 201
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error!" });
   }
 };
 
-exports.likeArticle = async (req, res) => {
+export const likeArticle = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
 
@@ -134,8 +136,9 @@ exports.likeArticle = async (req, res) => {
       return res.status(404).json({ message: "Article Not Found!" });
     }
 
-    // Check if the user has already liked the article
-    if (article.like.includes(req.user._id)) {
+    // Check if user has already liked the article
+    if (article.likes.includes(req.user._id)) {
+      // Fixed from like to likes
       return res.status(400).json({ message: "Article Already Liked!" });
     }
 
