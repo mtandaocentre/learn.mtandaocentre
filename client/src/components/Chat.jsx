@@ -111,7 +111,7 @@ const Chat = () => {
       </div>
 
       {user ? (
-        <motion.form
+        <Motion.form
           onSubmit={handleSubmit}
           className="flex"
           initial={{ opacity: 0 }}
@@ -124,23 +124,23 @@ const Chat = () => {
             placeholder="Type your message..."
             className="flex-1 bg-primary-dark text-text-light px-4 py-2 rounded-l-md focus:outline-none"
           />
-          <motion.button
+          <Motion.button
             type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-accent text-white px-4 py-2 rounded-r-md hover:bg-indigo-700 transition"
           >
             Send
-          </motion.button>
-        </motion.form>
+          </Motion.button>
+        </Motion.form>
       ) : (
-        <motion.div
+        <Motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center py-4"
         >
           Please login to participate in the chat
-        </motion.div>
+        </Motion.div>
       )}
     </div>
   );
