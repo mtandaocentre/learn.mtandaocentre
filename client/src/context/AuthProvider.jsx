@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AuthContext } from "./auth-context";
+import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-  // Memoized logout function (only one declaration)
   const logout = useCallback(() => {
     localStorage.removeItem("token");
     setToken(null);
@@ -20,7 +19,6 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   }, [navigate]);
 
-  // Check if user is authenticated
   useEffect(() => {
     const checkAuth = async () => {
       if (token) {
@@ -29,8 +27,8 @@ export const AuthProvider = ({ children }) => {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUser(res.data);
-        } catch (err) {
-          console.error("Auth check error:", err);
+        } catch (error) {
+          console.error("Auth check error:", error);
           logout();
         }
       }
@@ -38,7 +36,6 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, [token, API_URL, logout]);
 
-  // Register user
   const register = async (formData) => {
     try {
       const res = await axios.post(`${API_URL}/auth/register`, formData);
@@ -47,12 +44,11 @@ export const AuthProvider = ({ children }) => {
       setUser(res.data);
       toast.success("Registration successful!");
       navigate("/");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Registration failed");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Registration failed");
     }
   };
 
-  // Login user
   const login = async (formData) => {
     try {
       const res = await axios.post(`${API_URL}/auth/login`, formData);
@@ -61,8 +57,8 @@ export const AuthProvider = ({ children }) => {
       setUser(res.data);
       toast.success("Login successful!");
       navigate("/");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Login failed");
     }
   };
 
@@ -72,5 +68,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);
