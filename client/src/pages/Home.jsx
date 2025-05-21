@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import FloatingChat from "../components/FloatingChat";
 
 const Home = () => {
   const { user } = useAuth();
@@ -46,6 +47,8 @@ const Home = () => {
           <p className="text-gray-400">Monitor your learning journey</p>
         </div>
       </div>
+
+      <FloatingChat />
     </div>
   );
 };
