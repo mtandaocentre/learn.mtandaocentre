@@ -1,9 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "../context/AuthContext";
 import { io } from "socket.io-client";
-import { motion as Motion, AnimatePresence } from "framer-motion"; // Changed here
+import { motion as Motion, AnimatePresence } from "framer-motion";
 
 const Chat = () => {
+  // Disable rendering completely
+  return null;
+
+  /* -- Keep this code commented for future use --
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [room, setRoom] = useState("general");
@@ -55,7 +59,6 @@ const Chat = () => {
     setMessages([]);
   };
 
-  // Message animation variants
   const messageVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
@@ -144,6 +147,7 @@ const Chat = () => {
       )}
     </div>
   );
+  -- End of commented code -- */
 };
 
 export default Chat;

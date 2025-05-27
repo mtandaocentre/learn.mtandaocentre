@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { motion as Motion, AnimatePresence } from "framer-motion"; // Rename here
+import { motion as Motion, AnimatePresence } from "framer-motion";
 import Chat from "./Chat";
 
 const FloatingChat = () => {
+  // Disable rendering completely
+  return null;
+
+  /* -- Keep this code commented for future use --
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const chatVariants = {
@@ -17,7 +21,7 @@ const FloatingChat = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      <Motion.button // Changed here
+      <Motion.button
         variants={buttonVariants}
         whileHover="hover"
         whileTap="tap"
@@ -29,7 +33,7 @@ const FloatingChat = () => {
 
       <AnimatePresence>
         {isChatOpen && (
-          <Motion.div // Changed here
+          <Motion.div
             initial="closed"
             animate="open"
             exit="closed"
@@ -49,6 +53,7 @@ const FloatingChat = () => {
       </AnimatePresence>
     </div>
   );
+  -- End of commented code -- */
 };
 
 export default FloatingChat;
