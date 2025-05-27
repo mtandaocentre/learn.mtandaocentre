@@ -7,9 +7,9 @@ const Home = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 text-center">
-      <h1 className="text-4xl font-bold mb-4 text-text-light">Welcome to Learning Blog</h1>
+      <h1 className="text-4xl font-bold mb-4 text-text-light">welcome to learning.mtandaocentre</h1>
       <p className="text-xl text-text-light/70 mb-8">
-        Explore educational articles and join the community discussion
+        your online place for everything computers
       </p>
 
       <div className="flex justify-center gap-4 mb-12">
@@ -19,13 +19,13 @@ const Home = () => {
               to="/register"
               className="bg-accent text-text-light px-6 py-3 rounded-md hover:bg-gray-700 transition-colors"
             >
-              Get Started
+              get started
             </Link>
             <Link
               to="/login"
               className="bg-primary-darker text-text-light px-6 py-3 rounded-md hover:bg-primary-darkest transition-colors"
             >
-              Login
+              login
             </Link>
           </>
         )}
@@ -33,22 +33,22 @@ const Home = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="bg-primary-darker p-6 rounded-lg">
-          <h2 className="text-2xl font-bold mb-4 text-text-light">Learn</h2>
+          <h2 className="text-2xl font-bold mb-4 text-text-light">learn</h2>
           <p className="text-text-light/70">
-            Discover new articles on various topics
+            enroll into one of our classes
           </p>
         </div>
         <div className="bg-primary-darker p-6 rounded-lg">
-          <h2 className="text-2xl font-bold mb-4 text-text-light">Discuss</h2>
-          <p className="text-text-light/70">Join community conversations</p>
+          <h2 className="text-2xl font-bold mb-4 text-text-light">discuss</h2>
+          <p className="text-text-light/70">join our students whatsapp group</p>
         </div>
         <div className="bg-primary-darker p-6 rounded-lg">
-          <h2 className="text-2xl font-bold mb-4 text-text-light">Track Progress</h2>
-          <p className="text-text-light/70">Monitor your learning journey</p>
+          <h2 className="text-2xl font-bold mb-4 text-text-light">analytics</h2>
+          <p className="text-text-light/70">track your progress with data</p>
         </div>
       </div>
 
-      <FloatingChat />
+      {/*<FloatingChat />*/}
     </div>
   );
 };
