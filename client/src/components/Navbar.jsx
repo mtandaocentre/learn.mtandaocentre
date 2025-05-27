@@ -7,6 +7,7 @@ import {
   FaSignOutAlt,
   FaHome,
   FaComments,
+  FaInfoCircle,
 } from "react-icons/fa";
 import { useState } from "react";
 
@@ -60,7 +61,7 @@ const Navbar = () => {
                 } transition-colors`
               }
             >
-              <FaComments />
+              <FaInfoCircle /> {/* Updated icon */}
               <span>about</span>
             </NavLink>
 
@@ -188,7 +189,7 @@ const Navbar = () => {
               }
               onClick={() => setMobileMenuOpen(false)}
             >
-              <FaComments />
+              <FaInfoCircle /> {/* Updated icon */}
               <span>about</span>
             </NavLink>
 
