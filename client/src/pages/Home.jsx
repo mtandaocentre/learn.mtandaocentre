@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { 
+  FaGraduationCap,   // For Learn/Classes
+  FaWhatsapp,        // For Discuss
+  FaChartLine        // For Analytics
+} from "react-icons/fa";
 import FloatingChat from "../components/FloatingChat";
 
 const Home = () => {
@@ -32,17 +37,25 @@ const Home = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Learn/Classes Card */}
         <div className="bg-primary-darker p-6 rounded-lg">
+          <FaGraduationCap className="text-4xl mb-4 text-accent mx-auto" />
           <h2 className="text-2xl font-bold mb-4 text-text-light">learn</h2>
           <p className="text-text-light/70">
             enroll into one of our classes
           </p>
         </div>
+
+        {/* Discuss Card */}
         <div className="bg-primary-darker p-6 rounded-lg">
+          <FaWhatsapp className="text-4xl mb-4 text-accent mx-auto" />
           <h2 className="text-2xl font-bold mb-4 text-text-light">discuss</h2>
           <p className="text-text-light/70">join our students whatsapp group</p>
         </div>
+
+        {/* Analytics Card */}
         <div className="bg-primary-darker p-6 rounded-lg">
+          <FaChartLine className="text-4xl mb-4 text-accent mx-auto" />
           <h2 className="text-2xl font-bold mb-4 text-text-light">analytics</h2>
           <p className="text-text-light/70">track your progress with data</p>
         </div>
