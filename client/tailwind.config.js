@@ -6,15 +6,15 @@ export default {
     extend: {
       colors: {
         primary: {
-          dark: "#1a1a2e",
-          darker: "#16213e",
-          darkest: "#0f172a",
+          dark: "#1e293b",       // Neutral dark (similar to gray-800)
+          darker: "#0f172a",     // Darker neutral (similar to gray-900)
+          darkest: "#020617",    // Near-black (similar to gray-950)
         },
         text: {
-          light: "#e6f1ff",
-          lighter: "#f8fafc",
+          light: "#e2e8f0",      // Light gray (similar to gray-200)
+          lighter: "#f8fafc",     // Off-white (similar to gray-50)
         },
-        accent: "#4f46e5",
+        accent: "#4b5563",       // Medium neutral (similar to gray-600)
       },
     },
   },
