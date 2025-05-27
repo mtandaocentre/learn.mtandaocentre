@@ -22,13 +22,17 @@ const Home = () => {
           <>
             <Link
               to="/register"
-              className="bg-accent text-text-light px-6 py-3 rounded-md hover:bg-gray-700 transition-colors"
+              className="bg-accent text-text-light px-6 py-3 rounded-md 
+                      hover:bg-accent/80 hover:shadow-lg transition-all
+                      border-2 border-transparent hover:border-text-light"
             >
               get started
             </Link>
             <Link
               to="/login"
-              className="bg-primary-darker text-text-light px-6 py-3 rounded-md hover:bg-primary-darkest transition-colors"
+              className="bg-primary-darker text-text-light px-6 py-3 rounded-md 
+                      hover:bg-primary-darkest transition-all
+                      border-2 border-transparent hover:border-text-light"
             >
               login
             </Link>
