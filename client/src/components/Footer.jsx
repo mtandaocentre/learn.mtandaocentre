@@ -6,48 +6,48 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <div>
-            <h3 className="text-lg font-bold mb-3">Learning Blog</h3>
+            <h3 className="text-lg font-bold mb-3">learning.mtandaocentre</h3>
             <p className="text-gray-400 text-sm">
-              Empowering learners through quality content
+              your online place for everything computers
             </p>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">Explore</h4>
+            <h4 className="font-semibold mb-2">explore</h4>
             <ul className="space-y-1.5 text-gray-400 text-sm">
               <li>
                 <Link to="/articles" className="hover:text-accent transition">
-                  Articles
+                  classes  
                 </Link>
               </li>
               <li>
                 <Link to="/profile" className="hover:text-accent transition">
-                  Profile
+                  profile
                 </Link>
               </li>
               <li>
                 <Link to="/chat" className="hover:text-accent transition">
-                  Community Chat
+                  community chat
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">Legal</h4>
+            <h4 className="font-semibold mb-2">legal</h4>
             <ul className="space-y-1.5 text-gray-400 text-sm">
               <li>
                 <Link to="/privacy" className="hover:text-accent transition">
-                  Privacy Policy
+                  privacy policy
                 </Link>
               </li>
               <li>
                 <Link to="/terms" className="hover:text-accent transition">
-                  Terms of Service
+                  terms of service
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">Connect</h4>
+            <h4 className="font-semibold mb-2">connect</h4>
             <div className="flex space-x-4">
               <a
                 href="https://twitter.com"
