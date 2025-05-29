@@ -1,13 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
-  FaBook,
   FaUser,
   FaSignInAlt,
   FaSignOutAlt,
   FaHome,
-  FaComments,
   FaInfoCircle,
+  FaGraduationCap, // Changed from FaBook to FaGraduationCap
 } from "react-icons/fa";
 import { useState } from "react";
 
@@ -48,7 +47,7 @@ const Navbar = () => {
                 } transition-colors`
               }
             >
-              <FaBook />
+              <FaGraduationCap className="text-lg" /> {/* Changed icon */}
               <span>classes</span>
             </NavLink>
             <NavLink
@@ -61,7 +60,7 @@ const Navbar = () => {
                 } transition-colors`
               }
             >
-              <FaInfoCircle /> {/* Updated icon */}
+              <FaInfoCircle />
               <span>about</span>
             </NavLink>
 
@@ -177,8 +176,8 @@ const Navbar = () => {
               }
               onClick={() => setMobileMenuOpen(false)}
             >
-              <FaBook />
-              <span>articles</span>
+              <FaGraduationCap /> {/* Changed icon */}
+              <span>classes</span> {/* Changed text from "articles" to "classes" */}
             </NavLink>
             <NavLink
               to="/chat"
@@ -189,7 +188,7 @@ const Navbar = () => {
               }
               onClick={() => setMobileMenuOpen(false)}
             >
-              <FaInfoCircle /> {/* Updated icon */}
+              <FaInfoCircle />
               <span>about</span>
             </NavLink>
 
