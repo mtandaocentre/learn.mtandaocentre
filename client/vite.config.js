@@ -28,4 +28,10 @@ export default defineConfig({
       }
     }),
   ],
+   resolve: {
+    alias: {
+      // Axios browser compatibility
+      "axios/lib/platform/node/classes/FormData": "axios/lib/platform/browser/classes/FormData"
+    }
+  }
 });
