@@ -1,5 +1,5 @@
 @tailwind base;
-@tailwind component;
+@tailwind components;
 @tailwind utilities;
 
 :root {
@@ -17,13 +17,31 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ===== CRITICAL FIXES ===== */
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  @apply bg-primary-dark text-text-light;
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+/* ========================== */
+
 /* Tailwind-powered styles */
 body {
-  @apply bg-primary-dark text-text-light min-h-screen;
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  min-height: 100vh;
 }
 
 /* Dark mode transitions */
@@ -68,14 +86,6 @@ a {
 }
 a:hover {
   color: #374151; /* darker accent */
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
