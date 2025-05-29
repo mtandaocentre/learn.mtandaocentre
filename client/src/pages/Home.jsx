@@ -14,7 +14,7 @@ const Home = () => {
     <div className="w-full container mx-auto px-4 py-6 text-center">
       <h1 className="text-3xl md:text-4xl font-bold mb-3 text-text-light">welcome to learning.mtandaocentre</h1>
       <p className="text-lg md:text-xl text-text-light/70 mb-6">
-        your online place for everything computers
+        your online learning partner
       </p>
 
       <div className="flex justify-center gap-4 mb-8">

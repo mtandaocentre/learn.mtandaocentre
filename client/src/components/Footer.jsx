@@ -8,7 +8,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-3">learning.mtandaocentre</h3>
             <p className="text-gray-400 text-sm">
-              your online place for everything computers
+              your online learning partner
             </p>
           </div>
           <div>
