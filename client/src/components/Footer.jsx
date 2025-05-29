@@ -2,18 +2,18 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-primary-darker text-text-light py-8 mt-auto">
+    <footer className="bg-primary-darker text-text-light py-6 mt-auto">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <div>
-            <h3 className="text-xl font-bold mb-4">Learning Blog</h3>
-            <p className="text-gray-400">
+            <h3 className="text-lg font-bold mb-3">Learning Blog</h3>
+            <p className="text-gray-400 text-sm">
               Empowering learners through quality content
             </p>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">Explore</h4>
-            <ul className="space-y-2 text-gray-400">
+            <h4 className="font-semibold mb-2">Explore</h4>
+            <ul className="space-y-1.5 text-gray-400 text-sm">
               <li>
                 <Link to="/articles" className="hover:text-accent transition">
                   Articles
@@ -32,8 +32,8 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">Legal</h4>
-            <ul className="space-y-2 text-gray-400">
+            <h4 className="font-semibold mb-2">Legal</h4>
+            <ul className="space-y-1.5 text-gray-400 text-sm">
               <li>
                 <Link to="/privacy" className="hover:text-accent transition">
                   Privacy Policy
@@ -47,7 +47,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">Connect</h4>
+            <h4 className="font-semibold mb-2">Connect</h4>
             <div className="flex space-x-4">
               <a
                 href="https://twitter.com"
@@ -80,10 +80,9 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-700 pt-6 text-center text-gray-400">
+        <div className="border-t border-gray-700 pt-4 text-center text-gray-400 text-sm">
           <p>
-            &copy; {new Date().getFullYear()} Learning Blog. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} Learning Blog. All rights reserved.
           </p>
         </div>
       </div>
