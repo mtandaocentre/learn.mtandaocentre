@@ -17,7 +17,9 @@ const AppContent = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      
+      {/* Main content area - fixed to fill width */}
+      <main className="flex-grow w-full"> {/* Added w-full here */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/articles" element={<Articles />} />
