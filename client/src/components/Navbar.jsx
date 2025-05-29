@@ -16,7 +16,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-primary-darker shadow-md border-b border-gray-700">
+    <nav className="w-full bg-primary-darker shadow-md border-b border-gray-700">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="text-2xl font-bold text-text-light">
