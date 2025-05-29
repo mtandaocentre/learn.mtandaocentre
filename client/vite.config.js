@@ -9,9 +9,9 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {
-        name: "Learning Blog",
-        short_name: "LearnBlog",
-        description: "MERN Stack Learning Blog",
+        name: "learn.mtandaocentre",
+        short_name: "learn.mtandaocentre",
+        description: "a learning platform by mtandao centre",
         theme_color: "#1a1a2e",
         icons: [
           {
@@ -25,33 +25,7 @@ export default defineConfig({
             type: "image/png",
           },
         ],
-      },
-      workbox: {
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/your-api-url\.com\/api/,
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "api-cache",
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 24 * 60 * 60, // 1 day
-              },
-            },
-          },
-          {
-            urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "image-cache",
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
-              },
-            },
-          },
-        ],
-      },
+      }
     }),
   ],
 });
