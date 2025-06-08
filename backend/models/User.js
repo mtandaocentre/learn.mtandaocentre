@@ -21,6 +21,23 @@ const UserSchema = new mongoose.Schema({
     enum: ["admin", "student"],
     default: "student",
   },
+  savedArticles: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Article",
+    default: []
+  }],
+  readingProgress: [{
+    articleId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Article"
+    },
+    progress: {
+      type: Number,
+      min: 0,
+      max: 100,
+      default: 0
+    }
+  }],
   createdAt: {
     type: Date,
     default: Date.now,
