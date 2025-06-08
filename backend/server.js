@@ -8,6 +8,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import authRoutes from "./routes/authRoutes.js";
 import articleRoutes from "./routes/articleRoutes.js";
+import userRoutes from "./routes/userRoutes.js"; 
 import trackAnalytics from "./middlewares/analytics.js";
 
 const app = express();
@@ -37,6 +38,7 @@ mongoose
 // Routes
 app.use("/api/auth", authRoutes); // Added missing slash
 app.use("/api/articles", articleRoutes);
+app.use("/api/users", userRoutes); // 
 
 // Socket.io connection
 io.on("connection", (socket) => {
