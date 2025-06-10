@@ -3,22 +3,23 @@ const router = express.Router();
 import {
   getArticles,
   getArticleById,
-  createArticle, // Fixed typo from creatArticle
+  createArticle,
   updateArticle,
   deleteArticle,
   addComment,
   likeArticle,
 } from "../controllers/articleController.js";
-import { protect, admin } from "../middlewares/auth.js";
+import { protect } from "../middlewares/authMiddleware.js"; // Fixed path (singular)
+import requireAdmin from "../middlewares/adminMiddleware.js"; // Correct import
 
 // Public routes
 router.get("/", getArticles);
 router.get("/:id", getArticleById);
 
-// Admin protected routes
-router.post("/", protect, admin, createArticle); // Fixed typo here
-router.put("/:id", protect, admin, updateArticle);
-router.delete("/:id", protect, admin, deleteArticle);
+// Admin protected routes - FIXED: changed "admin" to "requireAdmin"
+router.post("/", protect, requireAdmin, createArticle);
+router.put("/:id", protect, requireAdmin, updateArticle);
+router.delete("/:id", protect, requireAdmin, deleteArticle);
 
 // Student protected routes
 router.post("/:id/comments", protect, addComment);
