@@ -4,7 +4,7 @@ import {
   getUserSavedArticles,
   getUserReadingProgress,
 } from "../controllers/userController.js";
-import { protect } from "../middlewares/auth.js";
+import { protect } from "../middlewares/authMiddleware.js";
 
 // Protected routes (user must be logged in)
 router.get("/:userId/saved", protect, getUserSavedArticles);
