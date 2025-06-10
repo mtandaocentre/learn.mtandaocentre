@@ -8,7 +8,8 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import authRoutes from "./routes/authRoutes.js";
 import articleRoutes from "./routes/articleRoutes.js";
-import userRoutes from "./routes/userRoutes.js"; 
+import userRoutes from "./routes/userRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js"; // NEW: Import admin routes
 import trackAnalytics from "./middlewares/analytics.js";
 
 const app = express();
@@ -36,16 +37,16 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
-app.use("/api/auth", authRoutes); // Added missing slash
+app.use("/api/auth", authRoutes);
 app.use("/api/articles", articleRoutes);
-app.use("/api/users", userRoutes); // 
+app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes); // NEW: Add admin routes
 
 // Socket.io connection
 io.on("connection", (socket) => {
   console.log("New client connected");
 
   socket.on("joinRoom", (room) => {
-    // Fixed case sensitivity
     socket.join(room);
     console.log(`User joined room: ${room}`);
   });
@@ -56,10 +57,16 @@ io.on("connection", (socket) => {
   });
 
   socket.on("chatMessage", ({ room, message, user }) => {
+    // NEW: Add admin verification for sensitive operations
+    if (room.startsWith("admin-") && user.role !== "admin") {
+      socket.emit("error", "Admin privileges required");
+      return;
+    }
+    
     io.to(room).emit("message", {
       user,
       text: message,
-      timestamp: new Date(), // Fixed typo: Data → Date
+      timestamp: new Date(),
     });
   });
 
