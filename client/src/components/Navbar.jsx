@@ -10,17 +10,30 @@ import {
   FaCog,
   FaChartLine
 } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [loginDropdownOpen, setLoginDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setLoginDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -59,19 +72,43 @@ const Navbar = () => {
                 <NavItem to="/profile" icon={<FaUser className="text-base"/>} label="Profile" />
                 <button
                   onClick={logout}
-                  className="flex items-center space-x-1 text-text-light hover:text-accent px-3 py-1.5 rounded-md transition-all hover:bg-primary-darkest text-sm group"
+                  className="flex items-center space-x-1 text-text-light hover:text-accent px-3 py-1.5 rounded-md transition-all hover:bg-primary-darkest text-sm"
                 >
-                  <FaSignOutAlt className="group-hover:scale-110 transition-transform text-base" />
+                  <FaSignOutAlt className="text-base" />
                   <span>Logout</span>
                 </button>
               </>
             ) : (
-              <NavItem 
-                to="/login" 
-                icon={<FaSignInAlt className="text-base"/>} 
-                label="Login"
-                className="bg-accent text-white hover:bg-accent/90 px-3 py-1.5 rounded-md transition-all text-sm"
-              />
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setLoginDropdownOpen(!loginDropdownOpen)}
+                  className="flex items-center space-x-1 bg-accent text-white px-3 py-1.5 rounded-md transition-all hover:bg-accent/90 text-sm"
+                >
+                  <FaSignInAlt className="text-base" />
+                  <span>Login</span>
+                </button>
+                
+                {loginDropdownOpen && (
+                  <div className="absolute top-full right-0 mt-1 w-48 bg-primary-darker rounded-md shadow-lg z-50 border border-gray-700">
+                    <Link
+                      to="/login?role=student"
+                      className="flex items-center space-x-2 px-4 py-2.5 text-text-light hover:bg-primary-darkest hover:text-accent transition-colors"
+                      onClick={() => setLoginDropdownOpen(false)}
+                    >
+                      <FaGraduationCap className="text-sm" />
+                      <span className="text-sm">Sign in as Student</span>
+                    </Link>
+                    <Link
+                      to="/login?role=admin"
+                      className="flex items-center space-x-2 px-4 py-2.5 text-text-light hover:bg-primary-darkest hover:text-accent transition-colors"
+                      onClick={() => setLoginDropdownOpen(false)}
+                    >
+                      <FaCog className="text-sm" />
+                      <span className="text-sm">Sign in as Admin</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
@@ -166,13 +203,22 @@ const Navbar = () => {
                 </button>
               </>
             ) : (
-              <MobileNavItem 
-                to="/login" 
-                icon={<FaSignInAlt className="text-base"/>} 
-                label="Login"
-                className="bg-accent text-white text-sm"
-                onClick={() => setMobileMenuOpen(false)} 
-              />
+              <>
+                <MobileNavItem 
+                  to="/login?role=student" 
+                  icon={<FaGraduationCap className="text-base"/>} 
+                  label="Sign in as Student"
+                  className="bg-accent/10 text-white"
+                  onClick={() => setMobileMenuOpen(false)} 
+                />
+                <MobileNavItem 
+                  to="/login?role=admin" 
+                  icon={<FaCog className="text-base"/>} 
+                  label="Sign in as Admin"
+                  className="bg-accent/10 text-white"
+                  onClick={() => setMobileMenuOpen(false)} 
+                />
+              </>
             )}
           </div>
         </div>
