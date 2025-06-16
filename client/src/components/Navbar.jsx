@@ -6,115 +6,75 @@ import {
   FaSignOutAlt,
   FaHome,
   FaInfoCircle,
-  FaGraduationCap, // Changed from FaBook to FaGraduationCap
+  FaGraduationCap,
+  FaCog,
+  FaChartLine
 } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Add scroll effect to navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="w-full bg-primary-darker shadow-md border-b border-gray-700">
+    <nav 
+      className={`w-full bg-primary-darker shadow-md sticky top-0 z-50 transition-all duration-300 ${
+        scrolled ? "py-0 border-b border-gray-700" : "py-2"
+      }`}
+    >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-2xl font-bold text-text-light">
+          <Link 
+            to="/" 
+            className="text-2xl font-bold text-text-light"
+            onClick={() => setMobileMenuOpen(false)}
+          >
             learn.<span className="text-accent">mtandaocentre</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center space-x-1 ${
-                  isActive 
-                    ? "text-accent" 
-                    : "text-text-light hover:text-accent/80"
-                } transition-colors`
-              }
-            >
-              <FaHome />
-              <span>home</span>
-            </NavLink>
-            <NavLink
-              to="/articles"
-              className={({ isActive }) =>
-                `flex items-center space-x-1 ${
-                  isActive 
-                    ? "text-accent" 
-                    : "text-text-light hover:text-accent/80"
-                } transition-colors`
-              }
-            >
-              <FaGraduationCap className="text-lg" /> {/* Changed icon */}
-              <span>classes</span>
-            </NavLink>
-            <NavLink
-              to="/chat"
-              className={({ isActive }) =>
-                `flex items-center space-x-1 ${
-                  isActive 
-                    ? "text-accent" 
-                    : "text-text-light hover:text-accent/80"
-                } transition-colors`
-              }
-            >
-              <FaInfoCircle />
-              <span>about</span>
-            </NavLink>
-
+          <div className="hidden md:flex items-center space-x-1">
+            <NavItem to="/" icon={<FaHome />} label="Home" />
+            <NavItem to="/courses" icon={<FaGraduationCap />} label="Courses" />
+            <NavItem to="/analytics" icon={<FaChartLine />} label="Analytics" />
+            <NavItem to="/about" icon={<FaInfoCircle />} label="About" />
+            
             {user ? (
               <>
                 {user.role === "admin" && (
-                  <NavLink
-                    to="/admin"
-                    className={({ isActive }) =>
-                      `flex items-center space-x-1 ${
-                        isActive 
-                          ? "text-accent" 
-                          : "text-text-light hover:text-accent/80"
-                      } transition-colors`
-                    }
-                  >
-                    <span>admin</span>
-                  </NavLink>
+                  <NavItem 
+                    to="/admin" 
+                    icon={<FaCog />} 
+                    label="Admin"
+                    className="bg-accent/10 hover:bg-accent/20 text-accent"
+                  />
                 )}
-                <NavLink
-                  to="/profile"
-                  className={({ isActive }) =>
-                    `flex items-center space-x-1 ${
-                      isActive 
-                        ? "text-accent" 
-                        : "text-text-light hover:text-accent/80"
-                    } transition-colors`
-                  }
-                >
-                  <FaUser />
-                  <span>profile</span>
-                </NavLink>
+                <NavItem to="/profile" icon={<FaUser />} label="Profile" />
                 <button
                   onClick={logout}
-                  className="flex items-center space-x-1 text-text-light hover:text-accent/80 transition-colors"
+                  className="flex items-center space-x-2 text-text-light hover:text-accent px-4 py-2 rounded-md transition-all hover:bg-primary-darkest group"
                 >
-                  <FaSignOutAlt />
-                  <span>logout</span>
+                  <FaSignOutAlt className="group-hover:scale-110 transition-transform" />
+                  <span>Logout</span>
                 </button>
               </>
             ) : (
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `flex items-center space-x-1 ${
-                    isActive 
-                      ? "text-accent" 
-                      : "text-text-light hover:text-accent/80"
-                  } transition-colors`
-                }
-              >
-                <FaSignInAlt />
-                <span>login</span>
-              </NavLink>
+              <NavItem 
+                to="/login" 
+                icon={<FaSignInAlt />} 
+                label="Login"
+                className="bg-accent text-white hover:bg-accent/90 px-4 py-2 rounded-md transition-all"
+              />
             )}
           </div>
 
@@ -122,7 +82,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-text-light hover:text-accent/80 focus:outline-none transition-colors"
+              className="text-text-light hover:text-accent focus:outline-none transition-colors p-2 rounded-md hover:bg-primary-darkest"
             >
               <svg
                 className="h-6 w-6"
@@ -153,102 +113,69 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-primary-dark pb-4 px-4 border-b border-gray-700">
-          <div className="flex flex-col space-y-3">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center space-x-2 py-2 ${
-                  isActive ? "text-accent" : "text-text-light hover:text-accent/80"
-                } transition-colors`
-              }
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <FaHome />
-              <span>home</span>
-            </NavLink>
-            <NavLink
-              to="/articles"
-              className={({ isActive }) =>
-                `flex items-center space-x-2 py-2 ${
-                  isActive ? "text-accent" : "text-text-light hover:text-accent/80"
-                } transition-colors`
-              }
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <FaGraduationCap /> {/* Changed icon */}
-              <span>classes</span> {/* Changed text from "articles" to "classes" */}
-            </NavLink>
-            <NavLink
-              to="/chat"
-              className={({ isActive }) =>
-                `flex items-center space-x-2 py-2 ${
-                  isActive ? "text-accent" : "text-text-light hover:text-accent/80"
-                } transition-colors`
-              }
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <FaInfoCircle />
-              <span>about</span>
-            </NavLink>
-
+        <div className="md:hidden bg-primary-darkest border-t border-gray-700 animate-fadeIn">
+          <div className="flex flex-col space-y-1 py-3">
+            <MobileNavItem 
+              to="/" 
+              icon={<FaHome />} 
+              label="Home" 
+              onClick={() => setMobileMenuOpen(false)} 
+            />
+            <MobileNavItem 
+              to="/courses" 
+              icon={<FaGraduationCap />} 
+              label="Courses" 
+              onClick={() => setMobileMenuOpen(false)} 
+            />
+            <MobileNavItem 
+              to="/analytics" 
+              icon={<FaChartLine />} 
+              label="Analytics" 
+              onClick={() => setMobileMenuOpen(false)} 
+            />
+            <MobileNavItem 
+              to="/about" 
+              icon={<FaInfoCircle />} 
+              label="About" 
+              onClick={() => setMobileMenuOpen(false)} 
+            />
+            
             {user ? (
               <>
                 {user.role === "admin" && (
-                  <NavLink
-                    to="/admin"
-                    className={({ isActive }) =>
-                      `flex items-center space-x-2 py-2 ${
-                        isActive
-                          ? "text-accent"
-                          : "text-text-light hover:text-accent/80"
-                      } transition-colors`
-                    }
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span>admin</span>
-                  </NavLink>
+                  <MobileNavItem 
+                    to="/admin" 
+                    icon={<FaCog />} 
+                    label="Admin"
+                    className="bg-accent/10"
+                    onClick={() => setMobileMenuOpen(false)} 
+                  />
                 )}
-                <NavLink
-                  to="/profile"
-                  className={({ isActive }) =>
-                    `flex items-center space-x-2 py-2 ${
-                      isActive
-                        ? "text-accent"
-                        : "text-text-light hover:text-accent/80"
-                    } transition-colors`
-                  }
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <FaUser />
-                  <span>profile</span>
-                </NavLink>
+                <MobileNavItem 
+                  to="/profile" 
+                  icon={<FaUser />} 
+                  label="Profile" 
+                  onClick={() => setMobileMenuOpen(false)} 
+                />
                 <button
                   onClick={() => {
                     logout();
                     setMobileMenuOpen(false);
                   }}
-                  className="flex items-center space-x-2 py-2 text-text-light hover:text-accent/80 transition-colors"
+                  className="flex items-center space-x-3 py-3 px-6 text-text-light hover:bg-primary-darker transition-all"
                 >
-                  <FaSignOutAlt />
-                  <span>logout</span>
+                  <FaSignOutAlt className="text-lg" />
+                  <span>Logout</span>
                 </button>
               </>
             ) : (
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `flex items-center space-x-2 py-2 ${
-                    isActive
-                      ? "text-accent"
-                      : "text-text-light hover:text-accent/80"
-                  } transition-colors`
-                }
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <FaSignInAlt />
-                <span>login</span>
-              </NavLink>
+              <MobileNavItem 
+                to="/login" 
+                icon={<FaSignInAlt />} 
+                label="Login"
+                className="bg-accent text-white"
+                onClick={() => setMobileMenuOpen(false)} 
+              />
             )}
           </div>
         </div>
@@ -256,5 +183,40 @@ const Navbar = () => {
     </nav>
   );
 };
+
+// Reusable NavItem component for desktop
+const NavItem = ({ to, icon, label, className = "" }) => (
+  <NavLink
+    to={to}
+    className={({ isActive }) =>
+      `flex items-center space-x-2 px-4 py-2 rounded-md transition-all ${
+        isActive
+          ? "text-accent bg-accent/10"
+          : "text-text-light hover:text-accent hover:bg-primary-darkest"
+      } ${className}`
+    }
+  >
+    <span className="text-lg">{icon}</span>
+    <span className="font-medium">{label}</span>
+  </NavLink>
+);
+
+// Reusable MobileNavItem component
+const MobileNavItem = ({ to, icon, label, onClick, className = "" }) => (
+  <NavLink
+    to={to}
+    className={({ isActive }) =>
+      `flex items-center space-x-3 py-3 px-6 ${
+        isActive
+          ? "text-accent bg-accent/10"
+          : "text-text-light hover:bg-primary-darker"
+      } ${className} transition-colors`
+    }
+    onClick={onClick}
+  >
+    <span className="text-lg">{icon}</span>
+    <span className="font-medium">{label}</span>
+  </NavLink>
+);
 
 export default Navbar;
