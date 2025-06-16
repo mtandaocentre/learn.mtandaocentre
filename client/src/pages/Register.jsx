@@ -8,6 +8,10 @@ const Register = () => {
   const { loaded, isCaptchaEnabled } = useClerk();
   const navigate = useNavigate();
 
+  // Get API URL from environment variables
+  const API_URL = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5000";
+  const CREATE_USER_ENDPOINT = `${API_URL}/api/users/create`;
+
   useEffect(() => {
     if (loaded && isCaptchaEnabled) {
       console.log("CAPTCHA enabled. Container should be initialized.");
@@ -33,17 +37,17 @@ const Register = () => {
       });
 
       // Send complete user data to your backend
-      const response = await fetch("http://localhost:5000/api/users/create", {
+      const response = await fetch(CREATE_USER_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          clerkUserId: result.id, // Changed from createdUserId to id
+          clerkUserId: result.id,
           username,
           email,
           role,
-          enrollmentStatus: "approved", // Add this
-          isEmailVerified: true, // Add this
-          isActive: true // Add this
+          enrollmentStatus: "approved",
+          isEmailVerified: true,
+          isActive: true
         }),
       });
 
@@ -63,6 +67,8 @@ const Register = () => {
       // More specific error messages
       if (err.errors?.[0]?.code === "form_captcha_invalid") {
         toast.error("CAPTCHA verification failed. Please try again.");
+      } else if (err.errors?.[0]?.code === "form_identifier_exists") {
+        toast.error("An account with this email already exists.");
       } else {
         toast.error(err.message || "Registration failed. Please try again.");
       }
@@ -84,6 +90,7 @@ const Register = () => {
               name="username"
               className="w-full px-3 py-2 bg-primary-dark border border-gray-600 rounded-md text-text-light"
               required
+              minLength={3}
             />
           </div>
           <div>
@@ -108,6 +115,7 @@ const Register = () => {
               name="password"
               className="w-full px-3 py-2 bg-primary-dark border border-gray-600 rounded-md text-text-light"
               required
+              minLength={6}
             />
           </div>
           <div>
@@ -132,6 +140,7 @@ const Register = () => {
           <button
             type="submit"
             className="w-full bg-accent text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition"
+            disabled={!isLoaded}
           >
             Register
           </button>
