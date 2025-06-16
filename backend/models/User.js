@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema({
+  clerkUserId: {
+    type: String,
+    unique: true,
+    sparse: true // Allows multiple nulls for non-Clerk users
+  },
   username: {
     type: String,
     required: true,
@@ -17,17 +21,22 @@ const UserSchema = new mongoose.Schema({
     lowercase: true,
     match: [/.+\@.+\..+/, 'Please enter a valid email']
   },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6
-  },
   role: {
     type: String,
     enum: ['admin', 'student'],
     default: 'student',
     required: true
   },
+  enrollmentStatus: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending'
+  },
+  classes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Class',
+    default: []
+  }],
   savedArticles: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Article',
@@ -45,6 +54,14 @@ const UserSchema = new mongoose.Schema({
       default: 0
     }
   }],
+  isEmailVerified: {
+    type: Boolean,
+    default: false
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -56,25 +73,7 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-// Password hashing middleware
-UserSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
-
-// Method to compare passwords
-UserSchema.methods.comparePassword = async function(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
-
-// Update the updatedAt field before saving
+// Update timestamp on save
 UserSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();
