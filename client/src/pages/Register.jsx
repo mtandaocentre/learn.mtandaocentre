@@ -1,29 +1,71 @@
-import { useState } from "react";
+import { useSignUp, useClerk } from "@clerk/clerk-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-  const { register } = useAuth();
+  const { isLoaded, signUp } = useSignUp();
+  const { loaded, isCaptchaEnabled } = useClerk();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  useEffect(() => {
+    if (loaded && isCaptchaEnabled) {
+      console.log("CAPTCHA enabled. Container should be initialized.");
+    }
+  }, [loaded, isCaptchaEnabled]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isLoaded) return;
+    
+    const formData = new FormData(e.target);
+    const username = formData.get("username");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const role = formData.get("role") || "student";
+
     try {
-      await register(formData);
-      navigate("/");
+      // Start the sign-up process with Clerk
+      const result = await signUp.create({
+        username,
+        emailAddress: email,
+        password,
+      });
+
+      // Send complete user data to your backend
+      const response = await fetch("http://localhost:5000/api/users/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clerkUserId: result.id, // Changed from createdUserId to id
+          username,
+          email,
+          role,
+          enrollmentStatus: "approved", // Add this
+          isEmailVerified: true, // Add this
+          isActive: true // Add this
+        }),
+      });
+
+      // Improved error handling
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create user in database");
+      }
+
+      // Prepare for email verification
+      await result.prepareEmailAddressVerification();
+      navigate("/verify-email");
+
     } catch (err) {
-      console.error(err);
-      toast.error(err.response?.data?.message || "Error message");
+      console.error("Registration error:", err);
+      
+      // More specific error messages
+      if (err.errors?.[0]?.code === "form_captcha_invalid") {
+        toast.error("CAPTCHA verification failed. Please try again.");
+      } else {
+        toast.error(err.message || "Registration failed. Please try again.");
+      }
     }
   };
 
@@ -40,8 +82,6 @@ const Register = () => {
               type="text"
               id="username"
               name="username"
-              value={formData.username}
-              onChange={handleChange}
               className="w-full px-3 py-2 bg-primary-dark border border-gray-600 rounded-md text-text-light"
               required
             />
@@ -54,8 +94,6 @@ const Register = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
               className="w-full px-3 py-2 bg-primary-dark border border-gray-600 rounded-md text-text-light"
               required
             />
@@ -68,12 +106,29 @@ const Register = () => {
               type="password"
               id="password"
               name="password"
-              value={formData.password}
-              onChange={handleChange}
               className="w-full px-3 py-2 bg-primary-dark border border-gray-600 rounded-md text-text-light"
               required
             />
           </div>
+          <div>
+            <label htmlFor="role" className="block mb-1">
+              Account Type
+            </label>
+            <select
+              id="role"
+              name="role"
+              className="w-full px-3 py-2 bg-primary-dark border border-gray-600 rounded-md text-text-light"
+              defaultValue="student"
+            >
+              <option value="student">Student</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+          
+          {loaded && isCaptchaEnabled && (
+            <div id="clerk-captcha" className="my-4"></div>
+          )}
+          
           <button
             type="submit"
             className="w-full bg-accent text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition"
